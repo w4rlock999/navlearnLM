@@ -10,44 +10,37 @@
   font-family: Arial, sans-serif;
 }
 
-.heading {
+.h1_ {
   font-size: 24px;
   margin-bottom: 20px;
   color: #333;
 }
 
-.input {
-  width: 80%;
+.input_ {
+  display: block;
+  margin: 20px auto;
   padding: 10px;
-  margin: 20px 0;
   font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  outline: none;
-  transition: border-color 0.3s ease;
+  cursor: pointer;
 }
 
-.input:focus {
-  border-color: #005bb5;
-}
-
-.button {
+.button_ {
   display: inline-block;
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #000;
+  background-color: black;
   border: none;
   border-radius: 5px;
-  color: #fff;
+  color: #a1a1a1;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.button:hover {
+.button_:hover {
   background-color: #005bb5;
 }
 
-.status {
+.p_ {
   margin-top: 20px;
   font-size: 14px;
   color: #555;
