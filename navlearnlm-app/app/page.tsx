@@ -12,6 +12,7 @@ import {
   useReactFlow,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import GenericAgentNode from './genericAgentNode'; // Import the custom node
 
 const initialNodes = [
   { id: '1', position: { x: 0, y: 0 }, data: { label: 'Agent 1' }, type: 'agent' },
@@ -40,18 +41,15 @@ function FlowWithProvider() {
 
   const onConnectEnd = useCallback(
     (event, connectionState) => {
-
       if (!connectionState || !connectionState.fromNode) return;
 
       const { fromNode, toNode } = connectionState;
 
-      // If `toNode` exists, don't add a new node or edge
       if (toNode) return;
 
       const { clientX, clientY } =
         'changedTouches' in event ? event.changedTouches[0] : event;
 
-      // Create a new node at the drop position
       const newNode = {
         id: getId(),
         position: screenToFlowPosition({ x: clientX, y: clientY }),
@@ -59,42 +57,38 @@ function FlowWithProvider() {
         type: nodeType,
       };
 
-      // Add the new node
       setNodes((nds) => nds.concat(newNode));
 
-      // console.log(connectionState.fromHandle)
+      const newEdge = connectionState.fromHandle.type === 'target'
+        ? { id: `e${newNode.id}-${fromNode.id}`, source: newNode.id, target: fromNode.id }
+        : { id: `e${fromNode.id}-${newNode.id}`, source: fromNode.id, target: newNode.id };
 
-      if (connectionState.fromHandle.type === 'target') {
-        // New edge
-        const newEdge = {
-          id: `e${connectionState.fromNode.id}-${newNode.id}`,
-          source: newNode.id,
-          target: connectionState.fromNode.id,
-        };      
-        setEdges((eds) => eds.concat(newEdge));
-
-      }else if (connectionState.fromHandle.type === 'source'){
-        // New edge
-        const newEdge = {
-          id: `e${connectionState.fromNode.id}-${newNode.id}`,
-          source: connectionState.fromNode.id,
-          target: newNode.id,
-        };
-        setEdges((eds) => eds.concat(newEdge));
-
-      }
-
-
+      setEdges((eds) => eds.concat(newEdge));
     },
     [nodeType, screenToFlowPosition, setNodes]
-    
   );
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <div style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 10 }}>
-        <button onClick={() => setNodeType('agent')}>Agent</button>
-        <button onClick={() => setNodeType('document')}>Document</button>
+      <button
+        onClick={() => setNodeType('agent')}
+        className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 focus:ring-2 focus:ring-blue-300"
+      >
+        Agent
+      </button>
+      <button
+        onClick={() => setNodeType('document')}
+        className="px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 focus:ring-2 focus:ring-green-300"
+      >
+        Document
+      </button>
+      <button
+        onClick={() => setNodeType('genericAgent')}
+        className="px-4 py-2 bg-purple-500 text-white rounded-lg shadow hover:bg-purple-600 focus:ring-2 focus:ring-purple-300"
+      >
+        Generic Agent
+      </button>
       </div>
       <ReactFlow
         nodes={nodes}
@@ -104,6 +98,7 @@ function FlowWithProvider() {
         onConnect={onConnect}
         onConnectEnd={onConnectEnd}
         fitView
+        nodeTypes={{ genericAgent: GenericAgentNode }} // Register custom node type
         style={{ backgroundColor: '#F7F9FB' }}
       >
         <Controls />
