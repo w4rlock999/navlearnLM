@@ -15,11 +15,12 @@ import {
 import '@xyflow/react/dist/style.css';
 import genericAgentNode from './genericAgentNode'; // Import the custom node
 import textNode from "./textNode"
+import paperNode from "./paperNode"
 
 const flowKey = 'example-flow';
 
 const initialNodes = [
-  { id: '1', position: { x: 0, y: 0 }, data: { label: 'Default Agent' }, type: 'genericAgent' },
+  { id: '1', position: { x: 0, y: 0 }, data: { label: 'A paper node' }, type: 'paper' },
   { id: '2', position: { x: 0, y: 100 }, data: { label: 'Text Node', text: 'This is a prompt text for LLM' }, type: 'text' },
 ];
 
@@ -112,7 +113,7 @@ function Flow() {
         onInit={setRfInstance}
         onConnectEnd={onConnectEnd}
         fitView
-        nodeTypes={{ genericAgent: genericAgentNode, text: textNode}} // Register custom node type
+        nodeTypes={{ genericAgent: genericAgentNode, text: textNode, paper: paperNode}} // Register custom node type
         style={{ backgroundColor: '#F7F9FB' }}
       >
         <Controls />
@@ -134,3 +135,43 @@ export default function Page() {
     </ReactFlowProvider>
   );
 }
+
+
+// 'use client'
+
+
+// import React, { useState, useCallback, useMemo } from 'react';
+// import YooptaEditor, { createYooptaEditor, YooptaContentValue, YooptaOnChangeOptions } from "@yoopta/editor";
+// import Paragraph from "@yoopta/paragraph";
+
+// const plugins = [Paragraph];
+
+// export default function Page() {
+//   const editor = useMemo(() => createYooptaEditor(), []);
+//   const [value, setValue] = useState<YooptaContentValue>();
+
+//   const onChange = (value: YooptaContentValue, options: YooptaOnChangeOptions) => {
+//     setValue(value);
+//   };
+    
+//   return (
+//     <div
+//       style={{
+//         padding: '10px',
+//         background: 'yellow',
+//         marginLeft: '100px',
+//         height: '150px'
+//       }}
+//     >
+//       <YooptaEditor
+//         editor={editor}
+//         plugins={plugins}
+//         placeholder="Type something"
+//         value={value}
+//         onChange={onChange}
+//       />
+//     </div>
+
+//   );
+// };
+
