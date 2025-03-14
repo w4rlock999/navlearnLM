@@ -9,8 +9,6 @@ import { useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 
-
-
 const PaperNode = ({ data, isConnectable }) => {
   const [text, setText] = useState(data.text || '');
   const editor = useCreateBlockNote();
